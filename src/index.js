@@ -3,19 +3,14 @@ import ReactDOM from 'react-dom';
 
 class App extends React.Component {
   
-  // this belongs to JavaScript
-  constructor(props) {
-    super(props) // deprecated code
-    
-    this.state = {lat: null, errorMessage: ''}
+  state = {lat: null, errorMessage: ''}
 
+  componentDidMount() {
     window.navigator.geolocation.getCurrentPosition(
-      position => { // success callback
-        this.setState({lat: position.coords.latitude})
-      }, 
-      err => {  // failure callback 
-        this.setState({ errorMessage: err.message })
-      } 
+      // success callback
+      position =>  this.setState({lat: position.coords.latitude}), 
+      // failure callback 
+        err => this.setState({ errorMessage: err.message })
     );
   }
 
