@@ -7,19 +7,30 @@ class App extends React.Component {
   constructor(props) {
     super(props) // deprecated code
     
-    this.state = {lat: null}
+    this.state = {lat: null, errorMessage: ''}
 
     window.navigator.geolocation.getCurrentPosition(
-      position => {
+      position => { // success callback
         this.setState({lat: position.coords.latitude})
-      }, // success callback
-      err => console.log(err) // failure callback 
+      }, 
+      err => {  // failure callback 
+        this.setState({ errorMessage: err.message })
+      } 
     );
   }
 
-  render() {
+  render() { // render method with conditional rendering to handle loading and errors
+      if (this.state.errorMessage && !this.state.lat) {
+        return <div>Error: { this.state.errorMessage}</div>
+      } 
 
-    return <div>Latitude: {this.state.lat}</div>
+      if (!this.state.errorMessage && this.state.lat) {
+        return <div>Latitude: { this.state.lat}</div>
+      }
+
+      if (!this.state.errorMessage && !this.state.lat) {
+        return <div>Loading...</div>
+      }
   }
   
 }
